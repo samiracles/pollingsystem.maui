@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PollingSystem.MAUI.Views.DashboardPage"
+             Title="{Binding Title}"
+             xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Command="{Binding RefreshCommand}" IconImageSource="refresh.png"/>
+        <ToolbarItem Text="Logout" 
+                     IconImageSource="logout.png" 
+                     Order="Primary"
+                     Command="{Binding LogoutCommand}"/>
+    </ContentPage.ToolbarItems>
+    <Grid VerticalOptions="FillAndExpand" RowDefinitions="*,Auto">
+
+        <tabView:SfTabView x:Name="tabView"  VerticalOptions="FillAndExpand" IndicatorBackground="#333333"
+                               IndicatorPlacement="Fill" IndicatorWidthMode="Stretch" Grid.Row="0" TabBarBackground="#6200EA">
+        <tabView:SfTabView.Items>
+            <tabView:SfTabItem Header="Active Polls" FontSize="18" TextColor="White">
+                <tabView:SfTabItem.Content>
+                            <ScrollView VerticalOptions="FillAndExpand">
+                                <StackLayout BindableLayout.ItemsSource="{Binding ActivePolls}" Orientation="Vertical">
+
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame Padding="10" Margin="5,5,5,0">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.PollSelectedCommand}" CommandParameter="{Binding .}"/>
+                                                </Frame.GestureRecognizers>
+                                                <VerticalStackLayout VerticalOptions="FillAndExpand" Margin="10,5,0,0" >
+                                                    <Label Text="{Binding Question}" FontSize="Medium" />
+                                                    <HorizontalStackLayout HorizontalOptions="Start" Spacing="5">
+                                                        <Label Text="{Binding StartDate, StringFormat='From {0:dd MMM yyyy}'}" />
+                                                        <Label Text="{Binding EndDate, StringFormat='To {0:dd MMM yyyy}'}" />
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+
+                            </ScrollView>
+                        </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+                <tabView:SfTabItem Header="Own Polls" TextColor="White" FontSize="18">
+                    <tabView:SfTabItem.Triggers>
+                        <DataTrigger TargetType="tabView:SfTabItem" Binding="{Binding IsGuest}" Value="True">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </tabView:SfTabItem.Triggers>
+                    <tabView:SfTabItem.Content>
+                        <ScrollView VerticalOptions="FillAndExpand">
+                            <StackLayout BindableLayout.ItemsSource="{Binding OwnPolls}" Orientation="Vertical" >
+
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Padding="10" Margin="5,5,5,0">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.PollSelectedCommand}" CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+
+                                            <VerticalStackLayout VerticalOptions="FillAndExpand" Margin="10,5,0,0" >
+                                                <Label Text="{Binding Question}" FontSize="Medium" />
+                                                <HorizontalStackLayout HorizontalOptions="Start" Spacing="5">
+                                                    <Label Text="{Binding StartDate, StringFormat='From {0:dd MMM yyyy}'}" />
+                                                    <Label Text="{Binding EndDate, StringFormat='To {0:dd MMM yyyy}'}" />
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </ScrollView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView.Items>
+    </tabView:SfTabView>
+            <Button Text="Add New Poll" Command="{Binding NavigateToCreatePollCommand}" 
+                    VerticalOptions="End" Grid.Row="1"  Margin="10" HorizontalOptions="FillAndExpand" />
+        <core:SfBusyIndicator IsRunning="{Binding IsBusy}" Grid.Row="0" Grid.RowSpan="1" 
+                              IsVisible="{Binding IsBusy}"
+                              BackgroundColor="#f2f2f2" 
+                              HeightRequest="100" 
+                              WidthRequest="100"/>
+    </Grid>
+</ContentPage>
