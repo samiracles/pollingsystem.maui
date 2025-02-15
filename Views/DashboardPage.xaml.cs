@@ -10,11 +10,12 @@ public partial class DashboardPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = _viewModel = new DashboardPageViewModel();    
-        tabView.SelectionChanged += TabView_SelectionChanged;
     }
 
-    private void TabView_SelectionChanged(object? sender, TabSelectionChangedEventArgs e)
+    protected override void OnAppearing()
     {
+        base.OnAppearing();
 
+        _viewModel.RefreshCommand.Execute(null);
     }
 }
