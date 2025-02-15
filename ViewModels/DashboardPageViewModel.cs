@@ -61,7 +61,6 @@ namespace PollingSystem.MAUI.ViewModels
             LogoutCommand = new Command(LogoutAsync);
             RefreshCommand = new Command(LoadPolls);
             IsGuest = CacheService.Instance.GetCurrentUser().Username == AppSettings.Guest;
-            LoadPolls();
         }
 
         private void LogoutAsync()

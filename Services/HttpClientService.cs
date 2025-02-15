@@ -11,7 +11,7 @@ namespace PollingSystem.MAUI.Services
     {
         private readonly HttpClient _httpClient;
 
-        const string DevTunnelurl = "https://nzc1j7cb-5053.inc1.devtunnels.ms/api/";
+        const string DevTunnelurl = "https://r7h72mcx-7108.inc1.devtunnels.ms/api/";
         const string url = "http://localhost:5053/api/";
 
         public HttpClientService()
